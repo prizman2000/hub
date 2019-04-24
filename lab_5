@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+const int N=100;
+
+struct airport{
+    string departure;
+    string arrival;
+    string time_dep;
+    string time_arr;
+    string number;
+    string dayOfWeek;
+};
+
+int main() {
+    setlocale(LC_ALL, "ru_RU");
+    airport mass[N];
+    bool writeLine=true;
+    string a;
+    int j=0;
+    string pomogite;
+    ifstream f1("/Users/apple/Desktop/elza.txt");
+    for(int i=1; getline(f1,a); i++){
+        if(a[0]!=' '){
+            if(a[0]<'A' || a[0]>'Z' || a[1]<'A' || a[1]>'Z' || a[2]<'A' || a[2]>'Z' || a[3]!=' '){
+                cout<<"Ошибка в поле <<пункт отправления>> во "<<i<<" строке!\n";
+                writeLine=false;
+            }if(a[4]<'A' || a[4]>'Z' || a[5]<'A' || a[5]>'Z' || a[6]<'A' || a[6]>'Z' || a[7]!=' '){
+                cout<<"Ошибка в поле <<пункт назначения>> во "<<i<<" строке!\n";
+                writeLine=false;
+            }if(!isdigit(a[8]) || !isdigit(a[9]) || a[10]!=':' || !isdigit(a[11]) || !isdigit(a[12]) || a[8]>'2' ||
+                     a[11]>'5' || a[13]!=' '){
+                cout<<"Ошибка в поле <<Время вылета>> во "<<i<<" строке!\n";
+                writeLine=false;
+            }if(!isdigit(a[14]) || !isdigit(a[15]) || a[16]!=':' || !isdigit(a[17]) || !isdigit(a[18]) || a[14]>'2' ||
+                     a[17]>'5' || a[19]!=' '){
+                cout<<"Ошибка в поле <<Время прилета>> во "<<i<<" строке!\n";
+                writeLine=false;
+            }if(!isdigit(a[20]) || !isdigit(a[21]) ||!isdigit(a[22]) || !isdigit(a[23]) || a[24]!=' ' ){
+                cout<<"Ошибка в поле <<№ рейса>> во "<<i<<" строке!\n";
+                writeLine=false;
+            }if((a[25]!='M' && a[26]!='o') && (a[25]!='T' && a[26]!='u') && (a[25]!='W' && a[26]!='e') && (a[25]!='T' && a[26]!='h') && (a[25]!='F' && a[26]!='r') && (a[25]!='S' && a[26]!='a') && (a[25]!='S' && a[26]!='u')){
+                cout<<"Ошибка в поле <<дни вылета>> во "<<i<<" строке!\n";
+                writeLine=false;
+            }if(writeLine) {
+
+                mass[j].departure=a.substr(0, 4);
+                mass[j].arrival=a.substr(4, 4);
+                mass[j].time_dep=a.substr(8, 6);
+                mass[j].time_arr=a.substr(14, 6);
+                mass[j].number=a.substr(20, 5);
+                mass[j].dayOfWeek=a.substr(25, 2);
+                j++;
+            }
+            writeLine=true;
+        }else{cout<<"Ошибка в поле <<пункт отправления>> во "<<i<<" строке!\n";}
+    }
+    for(int i=0; i<=j; i++){
+        cout<<mass[i].departure<<mass[i].arrival<<mass[i].time_dep<<mass[i].time_arr<<mass[i].number<<mass[i].dayOfWeek<<endl;
+    }
+    return 0;
+}
